@@ -169,10 +169,10 @@ class Network(nn.Module):
     k = sum(1 for i in range(self._steps) for n in range(2+i))
     num_ops = len(PRIMITIVES)
 
-    self.alphas_normal = Variable(1e-3*torch.randn(k, num_ops).cuda(), requires_grad=True)
-    self.alphas_reduce = Variable(1e-3*torch.randn(k, num_ops).cuda(), requires_grad=True)
-    self.betas_normal = Variable(1e-3*torch.randn(k).cuda(), requires_grad=True)
-    self.betas_reduce = Variable(1e-3*torch.randn(k).cuda(), requires_grad=True)
+    self.alphas_normal = nn.Parameter(1e-3*torch.randn(k, num_ops))
+    self.alphas_reduce = nn.Parameter(1e-3*torch.randn(k, num_ops))
+    self.betas_normal = nn.Parameter(1e-3*torch.randn(k))
+    self.betas_reduce = nn.Parameter(1e-3*torch.randn(k))
     self._arch_parameters = [
       self.alphas_normal,
       self.alphas_reduce,

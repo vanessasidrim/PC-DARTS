@@ -103,6 +103,7 @@ def main():
   scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, float(args.epochs))
   best_acc = 0.0
   for epoch in range(args.epochs):
+    optimizer.step() 
     scheduler.step()
     logging.info('epoch %d lr %e', epoch, scheduler.get_lr()[0])
     model.drop_path_prob = args.drop_path_prob * epoch / args.epochs
@@ -135,7 +136,7 @@ def train(train_queue, model, criterion, optimizer):
       loss_aux = criterion(logits_aux, target)
       loss += args.auxiliary_weight*loss_aux
     loss.backward()
-    nn.utils.clip_grad_norm(model.parameters(), args.grad_clip)
+    nn.utils.clip_grad_norm_(model.parameters(), args.grad_clip)
     optimizer.step()
 
     prec1, prec5 = utils.accuracy(logits, target, topk=(1, 5))
